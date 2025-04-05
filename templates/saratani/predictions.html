@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="">
+    <p class="font-weight-bold text-center" style="color: #004C56;">PAPS IMAGE PREDICTIONS</p>
+    <table class="table table-responsive-md"  style="font-size: 12px; border-radius: 5px;">
+        <tr class="table text-white font-weight-bold" style="background-color: #004C56; ">
+            <th>S/NO</th>
+            <th>PATIENT ID</th>
+            <th>PATIENT'S NAME</th>
+            <th>STATUS</th>
+            <th>HIGHEST FEATURE</th>
+            <th>ANALYTICS<th>
+            <th></th>
+            <th></th>
+           
+        </tr>
+        {% if available %}
+            {% for pred in predictions %}
+                <tr class="text font-weight-bold">
+                    <td>{{ forloop.counter }}</td>
+                    {% if pred.patient_id %}
+                        <td>{{ pred.patient_id }}</td>
+                    {% else %}
+                        <td class="text text-danger font-weight-bold">Not Registered</td>
+                    {% endif %}
+                    {% if pred.patient_name %}
+                        <td>{{ pred.patient_name }}</td>
+                    {% else %}
+                        <td>No Name</td>
+                    {% endif %}
+                    {% if pred.predicted %}
+                        <td class="text text-success font-weight-bold" style="color:green;">DONE</td>
+                    {% else %}
+                        <td  style="color:red;"><a class="btn btn-primary font-weight-bold btn-sm" href="{% url 'predict' pred.ide %}">PREDICT</a></td>
+                    {% endif %}
+                    {% if pred.f_value %}
+                        <td class="align-items-start"> {{ pred.f_name }} ({{ pred.f_value }}%)</td>
+                    {% else %}
+                        <td>...</td>
+                    {% endif %}
+                    {% if pred.predicted %}
+                    <td><a class="btn btn-success font-weight-bold btn-sm" href="{% url 'analysis' pred.ide %}">ANALYSIS</a></td>
+                    {% else %}
+                    <td><i class="fa fa-spinner fa-spin fa-2x fa-fw"></i></td>
+                    {% endif %}
+                    {% if pred.predicted %}
+                    <td ><a style="text-decoration: underline;" class="font-weight-bold text-decoration-underline text-primary" href="{% url 'report' pred.ide %}">Get Report</a></td>
+                    {% else %}
+                    <td><i class="fa fa-spinner fa-spin fa-2x fa-fw"></i></td>
+                    {% endif %}
+                    <td ><a style="text-decoration: underline;" class="font-weight-bold text-danger text-decoration-underline" href="{% url 'delete-prediction' pred.ide %}">Delete</a></td>
+                    <!-- <td  style="color:red;"><a class="btn btn-info font-weight-bold btn-sm text-light" target="blank" href="{{ pred.image.url }}">IMAGE</a></td> -->
+                    
+
+
+                </tr>
+            {% endfor %}
+        {% else %}
+        <p>No patients' paps smear upoaded!</p>
+        {% endif %}
+    </table>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color: #004c56;">
+        <h5 class="modal-title text-center text-light" id="exampleModalLabel">Fill Patient's Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true" style="color:snow;">&times;</span>
+        </button>
+      </div>
+      <form method="POST" action="{% url 'predictions' %}" enctype="multipart/form-data" style="background-color: #F79410;">
+          <div class="modal-body">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                {{ form|crispy }}
+            </fieldset>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Register</button>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}

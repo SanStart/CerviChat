@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="container content-section">
+    <div class="media">
+        {% if user.sex == "Male" %}
+            <img class="rounded-circle account-img" src="{% static 'male.jpeg' %}">
+        {% else %}
+            <img class="rounded-circle account-img" src="{% static 'female.jpeg' %}">
+        {% endif %}
+        <div class="">
+            <h2 style="font-family: cursive; font-size: 20px;" class="text text-dark ml-2 mt-4 pb-2">{{ user.first_name|upper }} {{ user.last_name|upper }}</h2>
+            <a  class="btn btn-danger btn-sm" href="{% url 'edit-profile' %}">Edit</a>
+            <a class="btn btn-success btn-sm ml-2" href="{% url 'predictions' %}">Predictions</a>
+        </div>
+    </div>
+    <fieldset class="table">
+        <table class="table table-responsive-md" style="font-size: 15px; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+            <tr>
+                <td>ID</i></td>
+                <td>{{ user.username }}</td>
+            </tr>
+            <tr>
+                
+                {% if user.is_doctor %}
+                <td><i class="fa fa-check fa-fw"></i></td>
+                <td>Doctor</td>
+                {% else %}
+                <td><i class="fa fa-spinner fa-spin fa-fw"></i></td>
+                <td>Verification Pending ..</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <td><i class="fa fa-envelope"></i></td>
+                <td ><a href="mailto:{{ user.email }}" >{{ user.email  }}</a></td>
+            </tr>
+        </table>
+    </fieldset>
+</div>
+{% endblock content %}

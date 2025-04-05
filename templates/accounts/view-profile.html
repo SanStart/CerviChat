@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container content-section">
+    <div class="media">
+        <img class="rounded-circle account-img" src="{{ mtu.image.url }}">
+        <div class="">
+            <h2 style="font-family: cursive; font-size: 20px;" class="text text-dark ml-2 mt-4 pb-2">{{ mtu.user.username|upper }}</h2>
+            <a class="btn btn-success btn-sm ml-2" href="{% url 'user-posts' mtu.user.username %}">Posts</a>
+        </div>
+    </div>
+    <fieldset class="table">
+        <table class="table table-responsive-md" style="font-size: 15px; font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+            <tr>
+                <td><i class="bx bx-user"></i></td>
+                <td>{% if mtu.fullname %}{{ mtu.fullname }}{% else %}{{ mtu.user.username }}{% endif %}</td>
+            </tr>
+            <tr>
+                <td><i class="bx bx-crown"></i></td>
+                <td>{{ mtu.bio  }}</td>
+            </tr>
+            {% if mtu.whatsapp %}
+            <tr>
+                <td><i class="bx bxl-whatsapp"></i></td>
+                <td><a href="{% if mtu.whatsapp %}https://wa.me/{{ mtu.whatsapp }}{% else %}{{ mtu.user.mail }}{% endif %} " class="mr-1 font-weight-bold">WhatsApp</a></td>
+            </tr>
+            {% endif %}
+            <tr>
+                <td><i class="bx bx-envelope"></i></td>
+                <td ><a href="mailto:{{ mtu.user.email }}" >{{ user.email  }}</a></td>
+            </tr>
+            {% if mtu.isocieg %}
+                <tr>
+                    <td><i class="bx bx-envelope"></i></td>
+                    <td ><a href="{% url 'register-for-voting' %}" >{{ user.email  }}</a></td>
+                </tr>
+            {% %}
+        </table>
+    </fieldset>
+</div>
+{% endblock content %}

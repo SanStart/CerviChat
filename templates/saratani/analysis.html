@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div id="displayed" class="col-lg-6 justify-content-center">
+        <h4 class="text text-primary text-center font-weight-bold">PAPS SMEAR HEATMAP RESULTS</h4>
+        <img style="height: auto; width: 600px; margin-top: -7px;" src="data:image/png;base64,{{ graphic|safe }}">
+    </div>
+    <div id="displayed" class="col-lg-6 justify-content-center">
+        <h4 class="text text-primary text-center font-weight-bold">INTERPRETATION</h4>
+        <p>{{ interpretation }}</p>
+    </div>
+{% endblock %}
